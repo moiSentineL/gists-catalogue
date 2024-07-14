@@ -174,3 +174,9 @@ tmp/
 
 # Profiling results
 restats
+
+#env
+.envrc
+
+#venv
+/g-venv
