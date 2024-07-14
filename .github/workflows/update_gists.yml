@@ -67,7 +67,7 @@ jobs:
 
       - name: Run Update Script
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GISTMASTER_TOKEN: ${{ secrets.GISTMASTER_TOKEN }}
         run: |
           python scripts/update_gists.py
@@ -75,7 +75,7 @@ jobs:
       - name: Commit and Push Changes
         if: github.repository != 'local-testing'  # Ensure this step is skipped for local testing
         env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
