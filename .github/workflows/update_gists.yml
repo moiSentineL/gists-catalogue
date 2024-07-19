@@ -39,23 +39,23 @@ jobs:
         run: |
           pytest
       
-      - name: Run tests with coverage
-        run: |
-          python -m coverage run -p -m pytest
-          python -m coverage combine
-          python -m coverage report -m --skip-covered
-          python -m coverage json
+      # - name: Run tests with coverage
+      #   run: |
+      #     python -m coverage run -p -m pytest
+      #     python -m coverage combine
+      #     python -m coverage report -m --skip-covered
+      #     python -m coverage json
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4.5.0
-        with:
-          file: ./coverage.json
-          flags: unittests
-          name: codecov-umbrella
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v4.5.0
+      #   with:
+      #     file: ./coverage.json
+      #     flags: unittests
+      #     name: codecov-umbrella
 
-      - name: Run cProfile
-        run: |
-          python tests/profile_gists.py
+      # - name: Run cProfile
+      #   run: |
+      #     python tests/profile_gists.py
     
       - name: Upload profiling results
         uses: actions/upload-artifact@v4
