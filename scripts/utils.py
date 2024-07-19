@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List
 
+import pandas as pd
 import requests
 
 try:
@@ -39,66 +40,8 @@ GIST_FORMAT = """
 """
 
 
-README = r"""
-# GistMaster
-
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/{github_username}/gists-catalogue/update_gists.yml?branch=main)
-![GitHub commits](https://img.shields.io/github/commit-activity/m/{github_username}/gists-catalogue)
-![GitHub contributors](https://img.shields.io/github/contributors/{github_username}/gists-catalogue)
-![Coverage Status](https://coveralls.io/repos/github/{github_username}/gists-catalogue/badge.svg?branch=main)
-![GitHub issues](https://img.shields.io/github/issues/{github_username}/gists-catalogue)
-![GitHub last commit](https://img.shields.io/github/last-commit/{github_username}/gists-catalogue)
-![GitHub language count](https://img.shields.io/github/languages/count/{github_username}/gists-catalogue)
-![License](https://img.shields.io/github/license/{github_username}/gists-catalogue)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/{github_username}/gists-catalogue)
-
-![GistMaster, a catalogue for your gists](docs/gistmaster.png)
-
-Welcome to **GistMaster**, your self-updating catalogue for **Github Gists**!
-
-This repository compiles my Gists automatically using Github Actions, keeping them organised in a well-structured and easy-to-browse format.
-
-👉 **[Check my Gists below](#gists)** to explore various code samples.
-
-🧑‍💻 If you like this, you can create your own catalogue! The project is designed to be easily reused by other Github users with minimal configuration, as explained in the [Quick Start](#quick-start) guide.
-
-
-## Table of Contents
-
-- [About](#about)
-- [Quick Start](#quick-start)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-- [Gists](#gists)
-
-## About
-
-👋 I'm **[@{github_username}]({github_url})**, and my open-source contributions are available on my **[Github profile]({github_url})**.
-In this repository, you will find solutions to various interview questions, coding challenges, and random snippets and scripts I've created.
-These gists are automatically fetched and updated using **Github Actions** and can be set up for your profile as well. 
-
-👉 **[Explore my Gists below](#gists)** to see my work and discover useful code samples.
-
-## Quick Start
-
-🚀 For detailed installation and setup instructions, please refer to the [Installation Guide](docs/SETUP.md).
-
-## Contributing
-
-🤝 Contributions are welcome! Please read the [Contributing Guidelines](docs/CONTRIBUTING.md) and [Code of Conduct](docs/CODE_OF_CONDUCT.md).
-
-## License
-
-📜 This project is licensed under the terms of the [GPL-3.0 license](LICENSE).
-
-## Contact
-
-📧 For any questions, feel free to contact me via my [GitHub profile]({github_url}).
-
-## Gists
-
-"""
+with open("scripts/readme", "r") as readmefile:
+    README = readmefile.read()
 
 # Functions that use Github API to fetch its data
 
@@ -262,7 +205,7 @@ def create_gist_index(gist: Gist) -> str:
     return folder_name
 
 
-def update_readme(gists: List[Gist]) -> None:
+def update_readme(gists: List[Gist], use_table_format: bool = True) -> None:
     """
     Update the README.md file with the list of Gists.
 
@@ -275,25 +218,61 @@ def update_readme(gists: List[Gist]) -> None:
         github_url=github_profile.get("html_url", ""),
     )
 
-    gist_entries = []
+    gists_entries = []
     for index, gist in enumerate(gists, start=1):
-        heading = f"Gist no. {index}"
+        description = gist.description
         folder_name = generate_folder_name(gist)
+        created_at = format_date(gist.created_at)
+        updated_at = format_date(gist.updated_at)
         languages = ", ".join(file.language for file in gist.files.values())
-        creation_date = format_date(gist.created_at)
-        update_date = format_date(gist.updated_at)
-        gist_entry = GIST_FORMAT.format(
-            heading=heading,
+        list_entry = GIST_FORMAT.format(
+            heading=f"Gist no. {index}",
             folder_name=folder_name,
             description=gist.description,
             language=languages,
-            creation_date=creation_date,
-            update_date=update_date,
+            creation_date=created_at,
+            update_date=updated_at,
         )
-        gist_entries.append(gist_entry.strip())
+        gists_entries.append(
+            [
+                index,
+                description,
+                folder_name,
+                languages,
+                created_at,
+                updated_at,
+                list_entry,
+            ]
+        )
+
+    # Generate content based on the format (table vs list)
+    if use_table_format:
+        df = pd.DataFrame(
+            gists_entries,
+            columns=[
+                "Gist",
+                "Description",
+                "Folder name",
+                "Language(s)",
+                "Creation date",
+                "Last updated",
+                "Gist Entry",
+            ],
+        )
+        df["Gist"] = df.apply(
+            lambda row: f"[{row.name + 1}](gists/{row['Folder name']}/index.md)",
+            axis=1,
+        )
+        # Generate Markdown table
+        gists_content = df[
+            ["Gist", "Description", "Language(s)", "Creation date", "Last updated"]
+        ].to_markdown(index=False)
+    else:
+        # Generate list format with the list entry (GIST_FORMAT values)
+        gists_content = "".join([entry[-1] for entry in gists_entries])
 
     # Combine all parts of the README content
-    full_readme_content = readme_content + "\n\n".join(gist_entries)
+    full_readme_content = readme_content + gists_content
 
     # Write the README file
     with open(Path("README.md"), "w") as readme_file:

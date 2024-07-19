@@ -180,3 +180,6 @@ restats
 
 #venv
 /g-venv
+
+#script
+update.sh

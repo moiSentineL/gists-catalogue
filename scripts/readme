@@ -1,0 +1,24 @@
+# GistMaster
+
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/{github_username}/gists-catalogue/update_gists.yml?branch=main)
+![GitHub commits](https://img.shields.io/github/commit-activity/m/{github_username}/gists-catalogue)
+![Coverage Status](https://coveralls.io/repos/github/{github_username}/gists-catalogue/badge.svg?branch=main)
+![GitHub issues](https://img.shields.io/github/issues/{github_username}/gists-catalogue)
+![GitHub last commit](https://img.shields.io/github/last-commit/{github_username}/gists-catalogue)
+
+<!-- ![GistMaster, a catalogue for your gists](docs/gistmaster.png) -->
+
+Welcome to my **GistMaster**, your self-updating catalogue for my **Github Gists**!
+
+This repository compiles my Gists automatically using Github Actions, keeping them organised in a well-structured and easy-to-browse format. Thanks to [@rjvitorino](https://github.com/rjvitorino/) for making this beautiful tool! If you want to make your own catalogue, check this [repo](https://github.com/rjvitorino/gists-catalogue/tree/main) out!
+
+👉 **[Check my Gists below](#gists)** to explore various code samples.
+
+## About
+
+👋 I'm **[@{github_username}]({github_url})**, and my open-source contributions are available on my **[Github profile]({github_url})**.
+In this repository, you will find random snippets and scripts I've created to live my lazy life and reduce busywork.
+
+👉 **[Explore my Gists below](#gists)** to see my work and discover _potentially_ useful code samples.
+
+## Gists
