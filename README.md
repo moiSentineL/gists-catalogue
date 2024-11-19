@@ -28,3 +28,4 @@ In this repository, you will find random snippets and scripts I've created to li
 | [2](gists/20240605-NCERT_Renamer-gist/index.md) | Rename NCERT Textbooks - can require some edit. Very hardcoded                                        | Python        | 2024-06-05      | 2024-06-05     |
 | [3](gists/20240622-checkin-gist/index.md)       | Hourly Check-in for productivity on Linux using native notify-send. Plays sound as well using paplay. | Shell         | 2024-06-22      | 2024-06-22     |
 | [4](gists/20240714-time_is_up-gist/index.md)    | A simple html file that shows "Time's Up" on the center of the page. Can be used with LeechBlock      | HTML          | 2024-07-14      | 2024-07-14     |
+| [5](gists/20241119-learn_python-gist/index.md)  | some resources to learn python                                                                        | Markdown      | 2024-11-19      | 2024-11-19     |
